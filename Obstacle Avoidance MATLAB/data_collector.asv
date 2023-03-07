@@ -1,6 +1,10 @@
-numOfRuns = 100;
-stopTime = "300";
+numOfRuns = 3;
+simRunTime = 15;
 for runNum=1:numOfRuns
+    abort = 0;
+    myTimer = timer('StartDelay',simRunTime, 'TimerFcn','set_param("ObstacleAvoidanceDemo","SimulationCommand","stop"); abort=1');
+
+    
     Scenario = uavScenario("UpdateRate",100,"ReferenceLocation",[0 0 0]);
     addMesh(Scenario,"cylinder",{[0 0 1] [0 .01]},[0 1 0]);
     InitialPosition = [0 0 -7];
@@ -122,8 +126,9 @@ for runNum=1:numOfRuns
     Gravity = 9.81;
     DroneMass = 0.1;
 
-    paramStruct.StopTime = stopTime;
+    start(myTimer);
     out = sim("ObstacleAvoidanceDemo.slx",paramStruct);
+    stop(myTimer);
 
     rollData = timetable2table(ts2timetable(out.roll));
     pitchData = timetable2table(ts2timetable(out.pitch));
@@ -139,7 +144,10 @@ for runNum=1:numOfRuns
     
     testData = horzcat(rollData,pitchData(:,2),thrustData(:,2),yawData(:,2),positionData,orientationData);
 
-    
-    writetable(testData,"dataset"+num2str(runNum)+".csv",'Delimiter',',','QuoteStrings',true);
+    if abort == 1
+        writetable(testData,"abort_dataset"+num2str(runNum)+".csv",'Delimiter',',','QuoteStrings',true);
+    else
+        writetable(testData,"dataset"+num2str(runNum)+".csv",'Delimiter',',','QuoteStrings',true);
+    end
 end
 
