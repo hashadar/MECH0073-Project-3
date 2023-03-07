@@ -1,4 +1,4 @@
-numOfRuns = 100;
+numOfRuns = 20;
 simRunTime = 360;
 for runNum=1:numOfRuns
     abort = 0;
@@ -127,7 +127,7 @@ for runNum=1:numOfRuns
     DroneMass = 0.1;
 
     start(myTimer);
-    out = sim("ObstacleAvoidanceDemo.slx",paramStruct);
+    out = sim("ObstacleAvoidanceDemo.slx");
     stop(myTimer);
 
     rollData = timetable2table(ts2timetable(out.roll));
