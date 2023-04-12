@@ -1,5 +1,5 @@
 numOfRuns = 10;
-simRunTime = 360;
+simRunTime = 900;
 droneMass = 0.2;
 for runNum=1:numOfRuns
     abort = 0;
@@ -123,7 +123,7 @@ for runNum=1:numOfRuns
     Ny = 10;
     Nz = 14.4947065605712; 
 
-    UAVSampleTime = 0.001;
+    UAVSampleTime = 0.01;
     Gravity = 9.81;
     DroneMass = droneMass;
 
@@ -136,14 +136,18 @@ for runNum=1:numOfRuns
     thrustData = timetable2table(ts2timetable(out.thrust));
     yawData = timetable2table(ts2timetable(out.yaw));
     yawData.Properties.VariableNames = {'Time','Yaw'};
+    desiredPositionData = array2table(squeeze(out.desiredPosition.data)');
+    desiredYawData = timetable2table(ts2timetable(out.desiredYaw));
     
     positionData = array2table(squeeze(out.trajectoryPoints)');
     orientationData = array2table(squeeze(out.orientation)');
 
     positionData.Properties.VariableNames = {'x','y','z'};
     orientationData.Properties.VariableNames = {'roll','pitch','yaw'};
+    desiredPositionData.Properties.VariableNames = {'desired x','desired y','desired z'};
+    desiredYawData.Properties.VariableNames = {'Time','desired yaw'};
     
-    testData = horzcat(rollData,pitchData(:,2),thrustData(:,2),yawData(:,2),positionData,orientationData);
+    testData = horzcat(rollData,pitchData(:,2),thrustData(:,2),yawData(:,2),positionData,orientationData,desiredPositionData,desiredYawData(:,2));
 
     if abort == 1
         writetable(testData,"timeOut_dataset"+num2str(runNum)+".csv",'Delimiter',',','QuoteStrings',true);
