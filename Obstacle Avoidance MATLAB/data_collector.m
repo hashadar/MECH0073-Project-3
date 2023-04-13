@@ -1,4 +1,4 @@
-numOfRuns = 10;
+numOfRuns = 5;
 simRunTime = 900;
 droneMass = 0.2;
 for runNum=1:numOfRuns
