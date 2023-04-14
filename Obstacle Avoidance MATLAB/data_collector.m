@@ -1,5 +1,5 @@
-numOfRuns = 5;
-simRunTime = 1200;
+numOfRuns = 1;
+simRunTime = 60;
 droneMass = 0.2;
 for runNum=1:numOfRuns
     abort = 0;
@@ -132,25 +132,30 @@ for runNum=1:numOfRuns
     stop(myTimer);
 
     rollData = timetable2table(ts2timetable(out.roll));
-    rollData.Properties.VariableNames = {'Time','Roll CI'};
+    rollData.Properties.VariableNames = {'Time','Roll CS'};
     pitchData = timetable2table(ts2timetable(out.pitch));
-    pitchData.Properties.VariableNames = {'Time','Pitch CI'};
+    pitchData.Properties.VariableNames = {'Time','Pitch CS'};
     thrustData = timetable2table(ts2timetable(out.thrust));
-    thrustData.Properties.VariableNames = {'Time','Thrust CI'};
+    thrustData.Properties.VariableNames = {'Time','Thrust CS'};
     yawData = timetable2table(ts2timetable(out.yaw));
-    yawData.Properties.VariableNames = {'Time','Yaw CI'};
+    yawData.Properties.VariableNames = {'Time','Yaw CS'};
     desiredPositionData = array2table(squeeze(out.desiredPosition.data)');
     desiredYawData = timetable2table(ts2timetable(out.desiredYaw));
     
     positionData = array2table(squeeze(out.trajectoryPoints)');
-    orientationData = array2table(squeeze(out.orientation)');
+
+    WorldPosition = timetable2table(ts2timetable(out.UAVState.WorldPosition));
+    Thrust = timetable2table(ts2timetable(out.UAVState.Thrust));
+    BodyAngularRateRPY = timetable2table(ts2timetable(out.UAVState.BodyAngularRateRPY));  
+    EulerZYX = timetable2table(ts2timetable(out.UAVState.EulerZYX));
+    WorldVelocity = timetable2table(ts2timetable(out.UAVState.WorldVelocity));
 
     positionData.Properties.VariableNames = {'x','y','z'};
-    orientationData.Properties.VariableNames = {'Roll actual','Pitch actual','Yaw actual'};
+    
     desiredPositionData.Properties.VariableNames = {'desired x','desired y','desired z'};
     desiredYawData.Properties.VariableNames = {'Time','desired yaw'};
     
-    testData = horzcat(rollData,pitchData(:,2),yawData(:,2),thrustData(:,2),positionData,orientationData,desiredPositionData,desiredYawData(:,2));
+    testData = horzcat(rollData,pitchData(:,2),yawData(:,2),thrustData(:,2),positionData,desiredPositionData,desiredYawData(:,2), WorldPosition(:,2),Thrust(:,2),BodyAngularRateRPY(:,2),EulerZYX(:,2),WorldVelocity(:,2));
 
     if abort == 1
         writetable(testData,"timeOut_dataset"+num2str(runNum)+".csv",'Delimiter',',','QuoteStrings',true);
