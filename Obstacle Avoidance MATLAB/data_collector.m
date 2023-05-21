@@ -1,6 +1,6 @@
 numOfRuns = 1;
 simRunTime = 60;
-droneMass = 0.2;
+droneMass = 1;
 for runNum=1:numOfRuns
     abort = 0;
     myTimer = timer('StartDelay',simRunTime, 'TimerFcn','set_param("ObstacleAvoidanceDemo","SimulationCommand","stop"); abort=1');
