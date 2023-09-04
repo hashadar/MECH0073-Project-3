@@ -1,0 +1,119 @@
+ \documentclass[11pt]{report}
+%% Useful packages
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper,left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{crop,graphicx,amsmath,array,color,amssymb,fancyhdr,lineno,float,booktabs}
+\usepackage{flushend,stfloats,amsthm,chngpage,times,lipsum,lastpage,parskip,adjustbox} 
+\usepackage{calc,listings,color,wrapfig,tabularx,longtable,multirow,enumitem,commath,siunitx,subcaption}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage[version = 4]{mhchem}
+\usepackage[numbers]{natbib}
+\usepackage[UKenglish]{babel}
+\usepackage[useregional]{datetime2}
+\usepackage{comment}
+\usepackage[subtle]{savetrees}
+\usepackage[
+  nottoc
+  %notlot
+  %notlof
+]{tocbibind}
+\usepackage{epsfig}
+\usepackage{epstopdf}
+\setcounter{tocdepth}{3}
+\setcounter{secnumdepth}{3}
+
+\makeatletter
+\def\@makechapterhead#1{%
+  %%%%\vspace*{50\p@}% %%% removed!
+  {\parindent \z@ \raggedright \normalfont
+    \ifnum \c@secnumdepth >\m@ne
+        \huge\bfseries \@chapapp\space \thechapter
+        \par\nobreak
+        \vskip 20\p@
+    \fi
+    \interlinepenalty\@M
+    \Huge \bfseries #1\par\nobreak
+    \vskip 20\p@
+  }}
+\def\@makeschapterhead#1{%
+  %%%%%\vspace*{50\p@}% %%% removed!
+  {\parindent \z@ \raggedright
+    \normalfont
+    \interlinepenalty\@M
+    \Huge \bfseries  #1\par\nobreak
+    \vskip 20\p@
+  }}
+\makeatother
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linktoc=all,
+    linkcolor=teal,
+    filecolor=teal,      
+    urlcolor=teal,
+    citecolor=teal,
+    pdftitle={Autonomous Drone Sensor Data Processing and Drone Control},
+}
+\DTMlangsetup[en-GB]{ord=raise,monthyearsep={\space}}
+\DTMsavedate{submission}{2023-05-22}
+
+\lstset{
+  language=Matlab,
+  basicstyle=\ttfamily,
+  keywordstyle=\color{blue},
+  commentstyle=\color{green},
+  stringstyle=\color{red},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  stepnumber=1,
+  numbersep=5pt,
+  backgroundcolor=\color{white},
+  frame=none, % remove the border
+  framesep=1pt, % reduce the spacing around the code
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=2,
+  showspaces=false,
+  showstringspaces=false
+}
+
+\renewcommand\bibname{References}
+%%%%%%%%%%%%   Header and Footer  %%%%%%%%%%%%%
+\pagestyle{fancy}
+\fancypagestyle{plain}{%
+  \fancyhf{}%
+  \fancyfoot[C]{ \bf\thepage\ \rm }%
+  \renewcommand{\headrulewidth}{0pt}% Line at the header invisible
+  \renewcommand{\footrulewidth}{0pt}% Line at the footer visible
+}
+\fancyhf{}
+\fancyhead[L]{Autonomous Drone Sensor Data Processing and Drone Control}
+\fancyfoot[L]{}
+\fancyfoot[C]{ \bf\thepage\ \rm }%
+
+\begin{document}
+\input{Title/title.tex}
+\input{tex/abstract.tex}
+\newpage{\hypersetup{linkcolor=black}
+\tableofcontents
+\listoffigures
+\begingroup
+\let\clearpage\relax
+\listoftables
+\endgroup
+}
+\hypersetup{linkcolor=teal}
+\newpage
+\input{tex/intro}
+\input{tex/litreview}
+\input{tex/methodology}
+\input{tex/implementation}
+\input{tex/resultsdiscussion}
+\input{tex/conclusions}
+\newpage
+\bibliographystyle{unsrtnat}
+\bibliography{Refs.bib}
+\newpage
+\input{Appendix/Appendix.tex}
+\end{document}
